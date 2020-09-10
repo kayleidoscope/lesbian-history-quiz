@@ -115,25 +115,32 @@ function generateQuestionTemplate() {
 //May include a photo per question
   let question = chooseQuestionNumber();
   return `
-  <form>
+  <form  id="answers">
     <p>${store.questions[question].question}</p>
       <div>
-        <input type="radio" id="answer1" name="answers" value="answer1">
+        <input type="radio" id="answer1" name="answers" value="answer1" required>
         <label for="answer1">${store.questions[question].answers[0]}</label><br>
-        <input type="radio" id="answer2" name="answers" value="answer2">
+        <input type="radio" id="answer2" name="answers" value="answer2" required>
         <label for="answer2">${store.questions[question].answers[1]}</label><br>
-        <input type="radio" id="answer3" name="answers" value="answer3">
+        <input type="radio" id="answer3" name="answers" value="answer3" required>
         <label for="answer3">${store.questions[question].answers[2]}</label><br>
-        <input type="radio" id="answer4" name="answers" value="answer4">
+        <input type="radio" id="answer4" name="answers" value="answer4" required>
         <label for="answer4">${store.questions[question].answers[3]}</label><br>
+        <button type="submit" id="js-submit-answer" value="Submit">Submit</button>
       </div>
   </form>`
+}
+
+function evaluateAnswer() {
+
 }
 
 function answerRightTemplateHTML() {
 //Includes text telling user they got the answer right
 //Includes running total score
 //If photo is included in question template, the same photo per question will appear here
+return `
+  <p>Please work.</p>`
 }
 
 function answerWrongTemplateHTML() {
@@ -167,6 +174,7 @@ function renderAnswerTemplate() {
 //This will happen after user has submitted an answer
 //Will use event handler that looks for when the button is clicked
 //Will need 'if' statement to determine needed template
+  $(".page-text").html(answerRightTemplateHTML());
 }
 
 function renderResultTemplate() {
@@ -191,7 +199,12 @@ function handleStartButton() {
 }
 
 function handleSubmitButton() {
+  $('#answers').submit(function(event) {
+    event.preventDefault();
+    renderAnswerTemplate();
+  })
 }
+
 
 function handleRetakeQuizButton() {
 
@@ -200,6 +213,7 @@ function handleRetakeQuizButton() {
 function handlePages() {
   renderStartTemplate();
   handleStartButton();
+  handleSubmitButton();
 }
 
 $(handlePages())
