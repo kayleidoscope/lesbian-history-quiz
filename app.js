@@ -70,6 +70,8 @@ const store = {
   score: 0
 };
 
+let numbers = [0, 1, 2, 3, 4, 5, 6]
+
 /**
  * 
  * Technical requirements:
@@ -89,17 +91,118 @@ const store = {
 
 // These functions return HTML templates
 
+function generateStartTemplate() {
+//Includes intro text
+//Includes functional "Start" button
+  return `
+    <h2>Welcome!</h2>
+    <p>Are you ready to test your knowledge of queer lady history in the USA?</p>
+    <button type="submit" id="js-start-button">Start Quiz</button>`
+}
+
+function chooseQuestionNumber() {
+  let min = 0;
+  let max = numbers.length - 1;
+  let questionNumber = Math.floor(Math.random() * max);
+  numbers.splice(questionNumber);
+  return questionNumber;
+}
+
+function generateQuestionTemplate() {
+//Includes question
+//Includes 4 answer options as part of a form
+//Includes functional "Submit answer" button
+//May include a photo per question
+  let question = chooseQuestionNumber();
+  return `
+  <form>
+    <p>${store.questions[question].question}</p>
+      <div>
+        <input type="radio" id="answer1" name="answers" value="answer1">
+        <label for="answer1">${store.questions[question].answers[0]}</label><br>
+        <input type="radio" id="answer2" name="answers" value="answer2">
+        <label for="answer2">${store.questions[question].answers[1]}</label><br>
+        <input type="radio" id="answer3" name="answers" value="answer3">
+        <label for="answer3">${store.questions[question].answers[2]}</label><br>
+        <input type="radio" id="answer4" name="answers" value="answer4">
+        <label for="answer4">${store.questions[question].answers[3]}</label><br>
+      </div>
+  </form>`
+}
+
+function answerRightTemplateHTML() {
+//Includes text telling user they got the answer right
+//Includes running total score
+//If photo is included in question template, the same photo per question will appear here
+}
+
+function answerWrongTemplateHTML() {
+  //Includes text telling user they got the answer wrong
+  //Includes running total score
+  //Includes text with the right answer
+  //If photo is included in question template, the same photo per question will appear here
+}
+
+function resultTemplateHTML() {
+//Includes text telling user how many questions they got right
+//Includes functional "Retake quiz" button
+}
+
 /********** RENDER FUNCTION(S) **********/
 
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
+
+function renderStartTemplate() {
+  console.log("`renderStartTemplate` ran");
+  $('.page-text').html(generateStartTemplate())
+}
+
+function renderQuestionTemplate() {
+//This will happen after user clicks "Start" button
+//Will use event handler that looks for when the button is clicked
+  $(".page-text").html(generateQuestionTemplate());
+}
+
+function renderAnswerTemplate() {
+//This will happen after user has submitted an answer
+//Will use event handler that looks for when the button is clicked
+//Will need 'if' statement to determine needed template
+}
+
+function renderResultTemplate() {
+//This will happen after user has submitted the final answer
+//Will use event handler that knows when the final question has been submitted
+}
+
 
 /********** EVENT HANDLER FUNCTIONS **********/
 
 // These functions handle events (submit, click, etc)
 
+function handleScore() {
+//Will return running score
+}
 
+function handleStartButton() {
+  $('#js-start-button').on('click', function(event) {
+    console.log('`handleStartButton` ran')
+    renderQuestionTemplate();
+  })
+}
 
+function handleSubmitButton() {
+}
 
+function handleRetakeQuizButton() {
+
+}
+
+function handlePages() {
+  renderStartTemplate();
+  handleStartButton();
+}
+
+$(handlePages())
 
 
 
