@@ -140,7 +140,8 @@ function correctAnswerTemplateHTML() {
 //Includes running total score
 //If photo is included in question template, the same photo per question will appear here
 return `
-  <p>You got it right!</p>`
+  <p>You got it right!</p>
+  <p>So far, your score is ${store.score} out of 6.</p>`
 }
 
 function incorrectAnswerTemplateHTML() {
@@ -149,7 +150,8 @@ function incorrectAnswerTemplateHTML() {
   //Includes text with the right answer
   //If photo is included in question template, the same photo per question will appear here
   return `
-  <p>You got it wrong.</p>`
+  <p>You got it wrong.</p>
+  <p>So far, your score is ${store.score} out of 6.</p>`
 }
 
 function resultTemplateHTML() {
@@ -234,9 +236,13 @@ function handleSubmitButton() {
     console.log("`handleSubmitButton` ran")
     const question = $(this).closest('form').find('p').text();
     if (evaluateAnswer(getAnswerSelected(), getCorrectAnswer(question))) {
+      store.score ++
       renderCorrectAnswerTemplate();
+      console.log(store.score)
     } else {
       renderIncorrectAnswerTemplate();
+      console.log(store.score)
+
     }
   })
 }
