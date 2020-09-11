@@ -1,6 +1,8 @@
 /**
  * Example store structure
  */
+
+
 const store = {
   // 5 or more questions are required
   questions: [
@@ -115,24 +117,27 @@ function generateQuestionTemplate() {
 //May include a photo per question
   let question = chooseQuestionNumber();
   return `
-  <form  id="answers">
+  <form>
     <p>${store.questions[question].question}</p>
-      <div>
-        <input type="radio" id="answer1" name="answers" value="answer1" required>
+      <div  id="answers">
+        <input type="radio" id="answer1" name="answers" value=${store.questions[question].answers[0]} required>
         <label for="answer1">${store.questions[question].answers[0]}</label><br>
-        <input type="radio" id="answer2" name="answers" value="answer2" required>
+        <input type="radio" id="answer2" name="answers" value=${store.questions[question].answers[1]} required>
         <label for="answer2">${store.questions[question].answers[1]}</label><br>
-        <input type="radio" id="answer3" name="answers" value="answer3" required>
+        <input type="radio" id="answer3" name="answers" value=${store.questions[question].answers[2]} required>
         <label for="answer3">${store.questions[question].answers[2]}</label><br>
-        <input type="radio" id="answer4" name="answers" value="answer4" required>
+        <input type="radio" id="answer4" name="answers" value=${store.questions[question].answers[3]} required>
         <label for="answer4">${store.questions[question].answers[3]}</label><br>
-        <button type="submit" id="js-submit-answer" value="Submit">Submit</button>
+        <button type="submit" id="js-submit-button" value="Submit">Submit</button>
       </div>
   </form>`
 }
 
-function evaluateAnswer() {
-
+function evaluateAnswer(correctAnswer) {
+  if (event.target === correctAnswer) {
+    return true
+  }
+  return false
 }
 
 function answerRightTemplateHTML() {
@@ -140,7 +145,7 @@ function answerRightTemplateHTML() {
 //Includes running total score
 //If photo is included in question template, the same photo per question will appear here
 return `
-  <p>Please work.</p>`
+  <p>You got it right!</p>`
 }
 
 function answerWrongTemplateHTML() {
@@ -148,6 +153,8 @@ function answerWrongTemplateHTML() {
   //Includes running total score
   //Includes text with the right answer
   //If photo is included in question template, the same photo per question will appear here
+  return `
+  <p>You got it wrong.</p>`
 }
 
 function resultTemplateHTML() {
@@ -167,6 +174,7 @@ function renderStartTemplate() {
 function renderQuestionTemplate() {
 //This will happen after user clicks "Start" button
 //Will use event handler that looks for when the button is clicked
+  console.log('`renderQuestionTemplate` ran')
   $(".page-text").html(generateQuestionTemplate());
 }
 
@@ -174,6 +182,7 @@ function renderAnswerTemplate() {
 //This will happen after user has submitted an answer
 //Will use event handler that looks for when the button is clicked
 //Will need 'if' statement to determine needed template
+  console.log('`renderAnswerTemplate` ran')
   $(".page-text").html(answerRightTemplateHTML());
 }
 
@@ -192,22 +201,26 @@ function handleScore() {
 }
 
 function handleStartButton() {
-  $('#js-start-button').on('click', function(event) {
+  $('main').on('click', '#js-start-button', function(event) {
     console.log('`handleStartButton` ran')
     renderQuestionTemplate();
   })
 }
 
+function getAnswerSelected() {
+  return $('input[type=radio][name=answers]:checked').val();
+}
+
 function handleSubmitButton() {
-  $('#answers').submit(function(event) {
-    event.preventDefault();
+  $('main').on('click', '#js-submit-button', function(event) {
+    console.log("`handleSubmitButton` ran")
+    getAnswerSelected();
+    console.log(getAnswerSelected())
     renderAnswerTemplate();
   })
 }
 
-
 function handleRetakeQuizButton() {
-
 }
 
 function handlePages() {
@@ -216,7 +229,8 @@ function handlePages() {
   handleSubmitButton();
 }
 
-$(handlePages())
+
+$(handlePages)
 
 
 

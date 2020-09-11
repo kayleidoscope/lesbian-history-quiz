@@ -17,3 +17,7 @@ main {
   height: 300px;
   margin: auto;
 }
+
+.red {
+  color: red;
+}
