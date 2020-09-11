@@ -72,8 +72,6 @@ const store = {
   score: 0
 };
 
-let numbers = [0, 1, 2, 3, 4, 5, 6]
-
 /**
  * 
  * Technical requirements:
@@ -101,16 +99,6 @@ function generateStartTemplate() {
     <p>Are you ready to test your knowledge of queer lady history in the USA?</p>
     <button type="submit" id="js-start-button">Start Quiz</button>`
 }
-
-/*
-function chooseQuestionNumber() {
-  let min = 0;
-  let max = numbers.length - 1;
-  let questionNumber = Math.floor(Math.random() * max);
-  numbers.splice(questionNumber);
-  return questionNumber;
-}
-*/
 
 function findQuestionNumber() {
   return store.questionNumber;
@@ -167,7 +155,9 @@ function resultTemplateHTML() {
 //Includes text telling user how many questions they got right
 //Includes functional "Retake quiz" button
   return `
-  <p>It's the end of the quiz.</p>`
+  <p>It's the end of the quiz.</p>
+  <p>You got ${store.score} questions right!</p>
+  <button type="submit" id="js-retake-quiz-button">Retake quiz?</button>`
 }
 
 /********** RENDER FUNCTION(S) **********/
@@ -205,7 +195,8 @@ console.log('`renderAnswerTemplate` ran')
 function renderResultTemplate() {
 //This will happen after user has submitted the final answer
 //Will use event handler that knows when the final question has been submitted
-  $(".page-text").html(resultTemplateHTML()); 
+  $(".page-text").html(resultTemplateHTML());
+  //store.questionNumber = 0;
 }
 
 
@@ -265,6 +256,10 @@ function handleSubmitButton() {
 
 
 function handleRetakeQuizButton() {
+  $('main').on('click', '#js-retake-quiz-button', function(event) {
+    console.log('`handleStartButton` ran')
+    renderQuestionTemplate();
+  })
 }
 
 function handlePages() {
