@@ -102,6 +102,7 @@ function generateStartTemplate() {
     <button type="submit" id="js-start-button">Start Quiz</button>`
 }
 
+/*
 function chooseQuestionNumber() {
   let min = 0;
   let max = numbers.length - 1;
@@ -109,13 +110,19 @@ function chooseQuestionNumber() {
   numbers.splice(questionNumber);
   return questionNumber;
 }
+*/
+
+function findQuestionNumber() {
+  return store.questionNumber;
+}
 
 function generateQuestionTemplate() {
 //Includes question
 //Includes 4 answer options as part of a form
 //Includes functional "Submit answer" button
 //May include a photo per question
-  let question = chooseQuestionNumber();
+  //let question = chooseQuestionNumber();
+  let question = findQuestionNumber();
   return `
   <form>
     <p>${store.questions[question].question}</p>
@@ -141,7 +148,8 @@ function correctAnswerTemplateHTML() {
 //If photo is included in question template, the same photo per question will appear here
 return `
   <p>You got it right!</p>
-  <p>So far, your score is ${store.score} out of 6.</p>`
+  <p>So far, your score is ${store.score} out of 6.</p><br>
+  <button type="submit" id="js-start-button">Next question</button>`
 }
 
 function incorrectAnswerTemplateHTML() {
@@ -151,7 +159,8 @@ function incorrectAnswerTemplateHTML() {
   //If photo is included in question template, the same photo per question will appear here
   return `
   <p>You got it wrong.</p>
-  <p>So far, your score is ${store.score} out of 6.</p>`
+  <p>So far, your score is ${store.score} out of 6.</p><br>
+  <button type="submit" id="js-start-button">Next question</button>`
 }
 
 function resultTemplateHTML() {
@@ -239,9 +248,11 @@ function handleSubmitButton() {
       store.score ++
       renderCorrectAnswerTemplate();
       console.log(store.score)
+      store.questionNumber ++
     } else {
       renderIncorrectAnswerTemplate();
       console.log(store.score)
+      store.questionNumber ++
 
     }
   })
