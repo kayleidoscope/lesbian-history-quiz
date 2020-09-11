@@ -166,6 +166,8 @@ function incorrectAnswerTemplateHTML() {
 function resultTemplateHTML() {
 //Includes text telling user how many questions they got right
 //Includes functional "Retake quiz" button
+  return `
+  <p>It's the end of the quiz.</p>`
 }
 
 /********** RENDER FUNCTION(S) **********/
@@ -203,6 +205,7 @@ console.log('`renderAnswerTemplate` ran')
 function renderResultTemplate() {
 //This will happen after user has submitted the final answer
 //Will use event handler that knows when the final question has been submitted
+  $(".page-text").html(resultTemplateHTML()); 
 }
 
 
@@ -210,13 +213,11 @@ function renderResultTemplate() {
 
 // These functions handle events (submit, click, etc)
 
-function handleScore() {
-//Will return running score
-}
-
 function handleStartButton() {
   $('main').on('click', '#js-start-button', function(event) {
     console.log('`handleStartButton` ran')
+    if (findQuestionNumber() === store.questions.length) {
+      renderResultTemplate();}
     renderQuestionTemplate();
   })
 }
@@ -225,12 +226,16 @@ function getAnswerSelected() {
   return $('input[type=radio][name=answers]:checked').val();
   }
 
-function getCorrectAnswer(question) {
+function getCorrectAnswer() {
+  /*
   for (let i = 0; i < store.questions.length; i++) {
     if (store.questions[i].question === question) {
       return store.questions[i].correctAnswer;
     }
   }
+  */
+  let number = findQuestionNumber();
+  return store.questions[number].correctAnswer
 }
 
 function evaluateAnswer(answerSelected, correctAnswer) {
@@ -253,7 +258,6 @@ function handleSubmitButton() {
       renderIncorrectAnswerTemplate();
       console.log(store.score)
       store.questionNumber ++
-
     }
   })
 }
