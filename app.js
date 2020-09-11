@@ -120,27 +120,22 @@ function generateQuestionTemplate() {
   <form>
     <p>${store.questions[question].question}</p>
       <div  id="answers">
-        <input type="radio" id="answer1" name="answers" value=${store.questions[question].answers[0]} required>
+        <input type="radio" id="answer1" name="answers" value="${store.questions[question].answers[0]}" required>
         <label for="answer1">${store.questions[question].answers[0]}</label><br>
-        <input type="radio" id="answer2" name="answers" value=${store.questions[question].answers[1]} required>
+        <input type="radio" id="answer2" name="answers" value="${store.questions[question].answers[1]}" required>
         <label for="answer2">${store.questions[question].answers[1]}</label><br>
-        <input type="radio" id="answer3" name="answers" value=${store.questions[question].answers[2]} required>
+        <input type="radio" id="answer3" name="answers" value="${store.questions[question].answers[2]}" required>
         <label for="answer3">${store.questions[question].answers[2]}</label><br>
-        <input type="radio" id="answer4" name="answers" value=${store.questions[question].answers[3]} required>
+        <input type="radio" id="answer4" name="answers" value="${store.questions[question].answers[3]}" required>
         <label for="answer4">${store.questions[question].answers[3]}</label><br>
         <button type="submit" id="js-submit-button" value="Submit">Submit</button>
       </div>
   </form>`
 }
 
-function evaluateAnswer(correctAnswer) {
-  if (event.target === correctAnswer) {
-    return true
-  }
-  return false
-}
 
-function answerRightTemplateHTML() {
+
+function correctAnswerTemplateHTML() {
 //Includes text telling user they got the answer right
 //Includes running total score
 //If photo is included in question template, the same photo per question will appear here
@@ -148,7 +143,7 @@ return `
   <p>You got it right!</p>`
 }
 
-function answerWrongTemplateHTML() {
+function incorrectAnswerTemplateHTML() {
   //Includes text telling user they got the answer wrong
   //Includes running total score
   //Includes text with the right answer
@@ -178,12 +173,20 @@ function renderQuestionTemplate() {
   $(".page-text").html(generateQuestionTemplate());
 }
 
-function renderAnswerTemplate() {
+function renderCorrectAnswerTemplate() {
 //This will happen after user has submitted an answer
 //Will use event handler that looks for when the button is clicked
 //Will need 'if' statement to determine needed template
   console.log('`renderAnswerTemplate` ran')
-  $(".page-text").html(answerRightTemplateHTML());
+  $(".page-text").html(correctAnswerTemplateHTML());
+  }
+
+function renderIncorrectAnswerTemplate() {
+//This will happen after user has submitted an answer
+//Will use event handler that looks for when the button is clicked
+//Will need 'if' statement to determine needed template
+console.log('`renderAnswerTemplate` ran')
+  $(".page-text").html(incorrectAnswerTemplateHTML());
 }
 
 function renderResultTemplate() {
@@ -209,16 +212,36 @@ function handleStartButton() {
 
 function getAnswerSelected() {
   return $('input[type=radio][name=answers]:checked').val();
+  }
+
+function getCorrectAnswer(question) {
+  for (let i = 0; i < store.questions.length; i++) {
+    if (store.questions[i].question === question) {
+      return store.questions[i].correctAnswer;
+    }
+  }
+}
+
+function evaluateAnswer(answerSelected, correctAnswer) {
+  if (answerSelected === correctAnswer) {
+    return true;
+  }
+  return false;
 }
 
 function handleSubmitButton() {
   $('main').on('click', '#js-submit-button', function(event) {
     console.log("`handleSubmitButton` ran")
-    getAnswerSelected();
-    console.log(getAnswerSelected())
-    renderAnswerTemplate();
+    const question = $(this).closest('form').find('p').text();
+    if (evaluateAnswer(getAnswerSelected(), getCorrectAnswer(question))) {
+      renderCorrectAnswerTemplate();
+    } else {
+      renderIncorrectAnswerTemplate();
+    }
   })
 }
+
+
 
 function handleRetakeQuizButton() {
 }
