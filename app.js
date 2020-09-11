@@ -92,8 +92,7 @@ const store = {
 // These functions return HTML templates
 
 function generateStartTemplate() {
-//Includes intro text
-//Includes functional "Start" button
+//Sets HTML code for the welcome page, including the start button.
   return `
     <h2>Welcome!</h2>
     <p>Are you ready to test your knowledge of queer lady history in the USA?</p>
@@ -101,15 +100,12 @@ function generateStartTemplate() {
 }
 
 function findQuestionNumber() {
+//Stores the question number in a function
   return store.questionNumber;
 }
 
 function generateQuestionTemplate() {
-//Includes question
-//Includes 4 answer options as part of a form
-//Includes functional "Submit answer" button
-//May include a photo per question
-  //let question = chooseQuestionNumber();
+//Sets the HTML code for all question pages in such a way that the selected radio button is usable later
   let question = findQuestionNumber();
   return `
   <form>
@@ -131,9 +127,8 @@ function generateQuestionTemplate() {
 
 
 function correctAnswerTemplateHTML() {
-//Includes text telling user they got the answer right
-//Includes running total score
-//If photo is included in question template, the same photo per question will appear here
+  console.log("`correctAnswerTemplate` ran");
+//Sets the HTML for the correctAnswer page, including the running score and button for the next question
 return `
   <p>You got it right!</p>
   <p>So far, your score is ${store.score} out of 6.</p><br>
@@ -141,19 +136,19 @@ return `
 }
 
 function incorrectAnswerTemplateHTML() {
-  //Includes text telling user they got the answer wrong
-  //Includes running total score
-  //Includes text with the right answer
-  //If photo is included in question template, the same photo per question will appear here
+  console.log("`incorrectAnswerTemplate` ran");
+//Sets the HTML for the incorectAnswer page, including the running score, button for next question,
+//and whichever answer was correct
   return `
-  <p>You got it wrong.</p>
+  <p>Sorry, you got it wrong.</p>
+  <p>The correct answer was ${store.questions[findQuestionNumber()].correctAnswer}.</p>
   <p>So far, your score is ${store.score} out of 6.</p><br>
   <button type="submit" id="js-start-button">Next question</button>`
 }
 
 function resultTemplateHTML() {
-//Includes text telling user how many questions they got right
-//Includes functional "Retake quiz" button
+console.log("`resultTemplateHTML` ran");
+//Sets the HTML for the final results page, with the final score, and a button to retake the quiz
   return `
   <p>It's the end of the quiz.</p>
   <p>You got ${store.score} questions right!</p>
@@ -165,36 +160,32 @@ function resultTemplateHTML() {
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
 
 function renderStartTemplate() {
+//puts generateStartTemplate() into the main tag so content appears on page load
   console.log("`renderStartTemplate` ran");
   $('.page-text').html(generateStartTemplate())
 }
 
 function renderQuestionTemplate() {
-//This will happen after user clicks "Start" button
-//Will use event handler that looks for when the button is clicked
+//puts generateQuestionTemplate() into the main tag, replacing start page or answer page
   console.log('`renderQuestionTemplate` ran')
   $(".page-text").html(generateQuestionTemplate());
 }
 
 function renderCorrectAnswerTemplate() {
-//This will happen after user has submitted an answer
-//Will use event handler that looks for when the button is clicked
-//Will need 'if' statement to determine needed template
+//puts correctAnswerTemplateHTML() into the main tag, replacing question, if user got question right
   console.log('`renderAnswerTemplate` ran')
   $(".page-text").html(correctAnswerTemplateHTML());
   }
 
 function renderIncorrectAnswerTemplate() {
-//This will happen after user has submitted an answer
-//Will use event handler that looks for when the button is clicked
-//Will need 'if' statement to determine needed template
+//Puts incorrectAnswerTemplateHTML() into the main tag, replacing question, if user got question wrong
 console.log('`renderAnswerTemplate` ran')
   $(".page-text").html(incorrectAnswerTemplateHTML());
 }
 
 function renderResultTemplate() {
-//This will happen after user has submitted the final answer
-//Will use event handler that knows when the final question has been submitted
+//Puts resultTemplateHTML() into the main tag, replacing final answer page
+console.log('`renderResultTemplate` ran')
   $(".page-text").html(resultTemplateHTML());
   //store.questionNumber = 0;
 }
@@ -205,31 +196,30 @@ function renderResultTemplate() {
 // These functions handle events (submit, click, etc)
 
 function handleStartButton() {
+//When the start button inside the main tag is clicked...
   $('main').on('click', '#js-start-button', function(event) {
     console.log('`handleStartButton` ran')
+//if the last question has been called, render results page
     if (findQuestionNumber() === store.questions.length) {
       renderResultTemplate();}
+//otherwise, render a question
     renderQuestionTemplate();
   })
 }
 
 function getAnswerSelected() {
+//set the user's answer to the current question to a function
   return $('input[type=radio][name=answers]:checked').val();
   }
 
 function getCorrectAnswer() {
-  /*
-  for (let i = 0; i < store.questions.length; i++) {
-    if (store.questions[i].question === question) {
-      return store.questions[i].correctAnswer;
-    }
-  }
-  */
+//set the correct answer to the current question to a function
   let number = findQuestionNumber();
   return store.questions[number].correctAnswer
 }
 
 function evaluateAnswer(answerSelected, correctAnswer) {
+//determines if user answered correctly by comparing their answer to the correct one
   if (answerSelected === correctAnswer) {
     return true;
   }
@@ -237,28 +227,34 @@ function evaluateAnswer(answerSelected, correctAnswer) {
 }
 
 function handleSubmitButton() {
+//when the submit button inside the main tag is clicked...
   $('main').on('click', '#js-submit-button', function(event) {
     console.log("`handleSubmitButton` ran")
+//...store the current question in a variable.
     const question = $(this).closest('form').find('p').text();
+//If user was right,...
     if (evaluateAnswer(getAnswerSelected(), getCorrectAnswer(question))) {
+      //...add 1 to the score...
       store.score ++
+      //...send the user to the answer template...
       renderCorrectAnswerTemplate();
-      console.log(store.score)
+      //...and add 1 to the question number.      
       store.questionNumber ++
+//If the user was wrong...
     } else {
+      //...send them to the incorrect answer template...
       renderIncorrectAnswerTemplate();
-      console.log(store.score)
+      //...and add 1 to the question number.
       store.questionNumber ++
     }
   })
 }
 
-
-
 function handleRetakeQuizButton() {
+  //When the retake quiz button is clicked on the main tag,...
   $('main').on('click', '#js-retake-quiz-button', function(event) {
-    console.log('`handleStartButton` ran')
-    renderQuestionTemplate();
+    //store.questionNumber = 0;
+    document.location.reload(true);
   })
 }
 
