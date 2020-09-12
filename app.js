@@ -49,12 +49,12 @@ const store = {
     {
       question: 'Which of these was a reason that a female sergeant in WWII gave for allowing lesbians in the military?',
       answers: [
-        'The military needed every man and woman the country could spare.',
-        'Fewer pregnancies occurred with lesbians around.',
-        'The government would be able to reeducate them in the military.',
-        'They deserved equal rights.'
+        'The military needed every man and woman the country could spare',
+        'Fewer pregnancies occurred with lesbians around',
+        'The government would be able to reeducate them in the military',
+        'They deserved equal rights'
       ],
-      correctAnswer: 'Fewer pregnancies occurred with lesbians around.'
+      correctAnswer: 'Fewer pregnancies occurred with lesbians around'
     },
     {
       question: 'What 1950s term described a lesbian who was neither a butch nor a femme?',
@@ -94,9 +94,11 @@ const store = {
 function generateStartTemplate() {
 //Sets HTML code for the welcome page, including the start button.
   return `
+  <div class="main-text">
     <h2>Welcome!</h2>
     <p>Are you ready to test your knowledge of queer lady history in the USA?</p>
-    <button type="submit" id="js-start-button">Start Quiz</button>`
+    <button type="submit" id="js-start-button">Start Quiz</button>
+    </div>`
 }
 
 function findQuestionNumber() {
@@ -108,31 +110,33 @@ function generateQuestionTemplate() {
 //Sets the HTML code for all question pages in such a way that the selected radio button is usable later
   let question = findQuestionNumber();
   return `
+  <h3>question ${findQuestionNumber()+1}</h3>
   <form>
     <p>${store.questions[question].question}</p>
-      <div  id="answers">
-        <input type="radio" id="answer1" name="answers" value="${store.questions[question].answers[0]}" required>
+      <div id="answers">
+        <input type="radio" id="answer1" name="answers" value="${store.questions[question].answers[0]}" required />
         <label for="answer1">${store.questions[question].answers[0]}</label><br>
-        <input type="radio" id="answer2" name="answers" value="${store.questions[question].answers[1]}" required>
+        <input type="radio" id="answer2" name="answers" value="${store.questions[question].answers[1]}" />
         <label for="answer2">${store.questions[question].answers[1]}</label><br>
-        <input type="radio" id="answer3" name="answers" value="${store.questions[question].answers[2]}" required>
+        <input type="radio" id="answer3" name="answers" value="${store.questions[question].answers[2]}" />
         <label for="answer3">${store.questions[question].answers[2]}</label><br>
-        <input type="radio" id="answer4" name="answers" value="${store.questions[question].answers[3]}" required>
+        <input type="radio" id="answer4" name="answers" value="${store.questions[question].answers[3]}" />
         <label for="answer4">${store.questions[question].answers[3]}</label><br>
         <button type="submit" id="js-submit-button" value="Submit">Submit</button>
       </div>
   </form>`
 }
 
-
-
 function correctAnswerTemplateHTML() {
   console.log("`correctAnswerTemplate` ran");
 //Sets the HTML for the correctAnswer page, including the running score and button for the next question
 return `
-  <p>You got it right!</p>
-  <p>So far, your score is ${store.score} out of 6.</p><br>
-  <button type="submit" id="js-start-button">Next question</button>`
+  <h3>question ${findQuestionNumber()+1}</h3>
+  <div class="main-text">
+  <p>You got question ${findQuestionNumber()+1} right!</p>
+  <p>So far, your score is ${store.score} out of ${store.questions.length}.</p>
+  <button type="submit" id="js-start-button">Next question</button>
+  </div>`
 }
 
 function incorrectAnswerTemplateHTML() {
@@ -140,24 +144,46 @@ function incorrectAnswerTemplateHTML() {
 //Sets the HTML for the incorectAnswer page, including the running score, button for next question,
 //and whichever answer was correct
   return `
-  <p>Sorry, you got it wrong.</p>
-  <p>The correct answer was ${store.questions[findQuestionNumber()].correctAnswer}.</p>
-  <p>So far, your score is ${store.score} out of 6.</p><br>
-  <button type="submit" id="js-start-button">Next question</button>`
+  <h3>question ${findQuestionNumber()+1}</h3>
+  <div class="main-text">
+  <p>I'm sorry, you got question ${findQuestionNumber()+1} wrong.</p>
+  <p>The correct answer was "${store.questions[findQuestionNumber()].correctAnswer}."</p>
+  <p>So far, your score is ${store.score} out of 6.</p>
+  <button type="submit" id="js-start-button">Next question</button>
+  </div>`
 }
 
 function resultTemplateHTML() {
 console.log("`resultTemplateHTML` ran");
 //Sets the HTML for the final results page, with the final score, and a button to retake the quiz
   return `
-  <p>It's the end of the quiz.</p>
-  <p>You got ${store.score} questions right!</p>
-  <button type="submit" id="js-retake-quiz-button">Retake quiz?</button>`
+  <div class="main-text">
+    <p style="padding-top: 15px">You've reached the end of the quiz.</p>
+    <p>You got ${store.score} questions out of ${store.questions.length} right!</p>
+    <button type="submit" id="js-retake-quiz-button">Retake quiz?</button>
+    <p style="padding-bottom: 15px">Want to know more? All of the information in this quiz came from "Odd Girls and Twilight Lovers: A History of Lesbian Life in Twentieth-Century America" by Lillian Faderman.</p>
+  </div>`
+}
+
+function generatePrettyHeader() {
+  return `
+  <div class="group">
+  <img src="images/holyoke.png" alt="" class="item" />
+    <h1 class="item2"><div>An American</div>
+    <div class="middle">LESBIAN</div>
+    <div>History Quiz</div></h1>
+  <img src="images/hampton-foster.png" alt="" class="item" />
+  </div>
+  `
 }
 
 /********** RENDER FUNCTION(S) **********/
 
 // This function conditionally replaces the contents of the <main> tag based on the state of the store
+
+function renderPrettyHeader() {
+  $('.header-decor').html(generatePrettyHeader())
+}
 
 function renderStartTemplate() {
 //puts generateStartTemplate() into the main tag so content appears on page load
@@ -189,7 +215,6 @@ console.log('`renderResultTemplate` ran')
   $(".page-text").html(resultTemplateHTML());
   //store.questionNumber = 0;
 }
-
 
 /********** EVENT HANDLER FUNCTIONS **********/
 
@@ -229,7 +254,7 @@ function evaluateAnswer(answerSelected, correctAnswer) {
 
 function handleSubmitButton() {
 //when the submit button inside the main tag is clicked...
-  $('main').on('click', '#js-submit-button', function(event) {
+  $('main').submit('#js-submit-button', function(event) {
     console.log("`handleSubmitButton` ran")
 //...store the current question in a variable.
     const question = $(this).closest('form').find('p').text();
@@ -260,6 +285,7 @@ function handleRetakeQuizButton() {
 }
 
 function handlePages() {
+  renderPrettyHeader();
   renderStartTemplate();
   handleStartButton();
   handleSubmitButton();
