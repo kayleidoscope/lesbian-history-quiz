@@ -201,9 +201,10 @@ function handleStartButton() {
     console.log('`handleStartButton` ran')
 //if the last question has been called, render results page
     if (findQuestionNumber() === store.questions.length) {
-      renderResultTemplate();}
+      renderResultTemplate();} else {
 //otherwise, render a question
     renderQuestionTemplate();
+      }
   })
 }
 
@@ -253,8 +254,8 @@ function handleSubmitButton() {
 function handleRetakeQuizButton() {
   //When the retake quiz button is clicked on the main tag,...
   $('main').on('click', '#js-retake-quiz-button', function(event) {
-    //store.questionNumber = 0;
-    document.location.reload(true);
+    store.questionNumber = 0;
+    renderStartTemplate();
   })
 }
 
@@ -262,6 +263,7 @@ function handlePages() {
   renderStartTemplate();
   handleStartButton();
   handleSubmitButton();
+  handleRetakeQuizButton();
 }
 
 
