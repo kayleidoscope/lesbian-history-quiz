@@ -67,11 +67,6 @@ button {
   /* flex-direction: column; */
 }
 
-.item {
-  /* flex: 1; */
-  /* order: 1; */
-}
-
 .item2 {
   order: 1;
   /* width: 40%; */

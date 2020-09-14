@@ -113,7 +113,7 @@ function generateQuestionTemplate() {
   <h3>question ${findQuestionNumber()+1}</h3>
   <form>
     <p>${store.questions[question].question}</p>
-      <div id="answers">
+      <div class="answers">
         <input type="radio" id="answer1" name="answers" value="${store.questions[question].answers[0]}" required />
         <label for="answer1">${store.questions[question].answers[0]}</label><br>
         <input type="radio" id="answer2" name="answers" value="${store.questions[question].answers[1]}" />
@@ -122,7 +122,7 @@ function generateQuestionTemplate() {
         <label for="answer3">${store.questions[question].answers[2]}</label><br>
         <input type="radio" id="answer4" name="answers" value="${store.questions[question].answers[3]}" />
         <label for="answer4">${store.questions[question].answers[3]}</label><br>
-        <button type="submit" id="js-submit-button" value="Submit">Submit</button>
+        <button type="submit" class="js-submit-button" value="Submit">Submit</button>
       </div>
   </form>`
 }
@@ -252,9 +252,10 @@ function evaluateAnswer(answerSelected, correctAnswer) {
   return false;
 }
 
-function handleSubmitButton() {
+function handleSubmitButton(event) {
 //when the submit button inside the main tag is clicked...
-  $('main').submit('#js-submit-button', function(event) {
+  $(document).submit('.js-submit-button', function(event) {
+    event.preventDefault();
     console.log("`handleSubmitButton` ran")
 //...store the current question in a variable.
     const question = $(this).closest('form').find('p').text();
