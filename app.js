@@ -27,7 +27,7 @@ const store = {
       correctAnswer: '1928'
     },
     {
-      question: 'What percent of women in 1929 admitted to having had intense emotional relations with other women?',
+      question: 'In a 1929 study, what percent of women admitted to having had intense emotional relations with another woman?',
       answers: [
         '50.4%',
         '24.7%',
@@ -35,16 +35,6 @@ const store = {
         '2.8%'
       ],
       correctAnswer: '50.4%'
-    },
-    {
-      question: 'Which word in the 1930s referred to a woman who strayed into lesbianism as second-best but stayed because she found she preferred it to heterosexuality?',
-      answers: [
-        'twist',
-        'loop',
-        'spook',
-        'canary'
-      ],
-      correctAnswer: 'spook'
     },
     {
       question: 'Which of these was a reason that a female sergeant in WWII gave for allowing lesbians in the military?',
