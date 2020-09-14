@@ -158,11 +158,11 @@ console.log("`resultTemplateHTML` ran");
 function generatePrettyHeader() {
   return `
   <div class="group">
-  <img src="images/holyoke.png" alt="" class="item" />
+  <img src="images/holyoke.png" alt="Mount Holyoke College students embrace, circa 1880." class="item" />
     <h1 class="item2"><div>An American</div>
     <div class="middle">LESBIAN</div>
     <div>History Quiz</div></h1>
-  <img src="images/hampton-foster.png" alt="" class="item" />
+  <img src="images/hampton-foster.png" alt="Mabel Hampton and Lillian Foster stand together, circa 1940" class="item" />
   </div>
   `
 }
