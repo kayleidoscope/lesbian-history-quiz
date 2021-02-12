@@ -138,7 +138,7 @@ function incorrectAnswerTemplateHTML() {
   <div class="main-text">
   <p>I'm sorry, you got question ${findQuestionNumber()+1} wrong.</p>
   <p>The correct answer was "${store.questions[findQuestionNumber()].correctAnswer}."</p>
-  <p>So far, your score is ${store.score} out of 6.</p>
+  <p>So far, your score is ${store.score} out of ${store.questions.length}.</p>
   <button type="submit" id="js-start-button">Next question</button>
   </div>`
 }
@@ -161,7 +161,7 @@ function generatePrettyHeader() {
   <img src="images/holyoke.png" alt="Mount Holyoke College students embrace, circa 1880." class="item" />
     <h1 class="item2"><div>An American</div>
     <div class="middle">LESBIAN</div>
-    <div>History Quiz</div></h1>
+    <div>History Quiz!</div></h1>
   <img src="images/hampton-foster.png" alt="Mabel Hampton and Lillian Foster stand together, circa 1940" class="item" />
   </div>
   `
@@ -271,6 +271,7 @@ function handleRetakeQuizButton() {
   //When the retake quiz button is clicked on the main tag,...
   $('main').on('click', '#js-retake-quiz-button', function(event) {
     store.questionNumber = 0;
+    store.score = 0;
     renderStartTemplate();
   })
 }
