@@ -2,7 +2,7 @@
 
 This site contains questions to quiz you on your knowledge of American lesbian culture in the 1900s.
 
-Check out the [live site](file:///Users/imac/projects/lesbian-history-quiz/index.html).
+Check out the [live site](https://kayleidoscope.github.io/lesbian-history-quiz/).
 
 ## Inspiration
 
